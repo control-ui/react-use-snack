@@ -1,1 +1,1 @@
-export * from './useSnack'
+export * from './useSnack.js'

@@ -5,9 +5,9 @@ env:
 
 on:
     push:
-        branches: [ main, develop, 'feature/*' ]
+        branches: [ main, 'feature/*' ]
     pull_request:
-        branches: [ main, develop, 'feature/*' ]
+        branches: [ main, 'feature/*' ]
     create:
         tags:
             - '[0-9]+.[0-9]+.[0-9]+*'
@@ -52,7 +52,6 @@ jobs:
             -   name: Build
                 run: |
                     npm run build
-
 
             -   name: Publish to NPM
                 if: github.ref == 'refs/heads/main'

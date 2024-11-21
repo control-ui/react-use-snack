@@ -1,12 +1,12 @@
-import React from 'react'
-import { List } from 'immutable'
+import { createContext, Dispatch, PropsWithChildren, SetStateAction, useState } from 'react'
 
-export type SnackbarContextData = List<SnackbarNotice>
+export type SnackbarContextData<TNotice extends SnackbarNotice> = TNotice[]
 
-export type setSnackbar = React.Dispatch<React.SetStateAction<SnackbarContextData>>
+export type setSnackbar<TNotice extends SnackbarNotice> = Dispatch<SetStateAction<SnackbarContextData<TNotice>>>
 
-// @ts-ignore
-export const SnackbarContext = React.createContext<[SnackbarContextData, setSnackbar]>([])
+export const SnackbarContext = createContext<[SnackbarContextData<SnackbarNotice>, setSnackbar<SnackbarNotice>]>(
+    [[], () => undefined],
+)
 
 export interface SnackbarNotice {
     id: number | string
@@ -27,16 +27,15 @@ export interface SnackbarNotice {
     description?: string
 }
 
-export const SnackbarInitial = List() as List<SnackbarNotice>
-export const SnackProvider = ({children}: React.PropsWithChildren<any>) => {
-    const state = React.useState<SnackbarContextData>(SnackbarInitial)
+export const SnackProvider = ({children}: PropsWithChildren<any>) => {
+    const state = useState<SnackbarContextData<SnackbarNotice>>([])
 
     return <SnackbarContext.Provider value={state}>
         {children}
     </SnackbarContext.Provider>
 }
 
-export interface UseSnackbarActions<N extends SnackbarNotice = SnackbarNotice> {
-    addNotice: (notice: Omit<N, 'id'> & Partial<Pick<N, 'id'>>) => string | number
+export interface UseSnackbarActions<TNotice extends SnackbarNotice = SnackbarNotice> {
+    addNotice: (notice: Omit<TNotice, 'id'> & Partial<Pick<TNotice, 'id'>>) => string | number
     rmNotice: (id: string | number) => void
 }
