@@ -1,0 +1,54 @@
+{
+    "name": "react-use-snack",
+    "version": "0.1.0",
+    "description": "",
+    "homepage": "https://bemit.codes",
+    "author": {
+        "name": "bemit",
+        "url": "https://bemit.codes"
+    },
+    "contributors": [
+        {
+            "name": "Michael Becker",
+            "url": "https://i-am-digital.eu"
+        }
+    ],
+    "license": "MIT",
+    "keywords": [
+        "react-component",
+        "react"
+    ],
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/control-ui/react-use-snack.git",
+        "directory": "packages/react-use-snack"
+    },
+    "bugs": {
+        "url": "https://github.com/control-ui/react-use-snack/issues"
+    },
+    "devDependencies": {
+        "@types/react": "^18.0",
+        "@types/react-dom": "^18.0",
+        "@mui/material": "^5.1",
+        "@mui/icons-material": "^5.1",
+        "@emotion/react": "^11.9.0",
+        "@emotion/styled": "^11.8.1",
+        "immutable": "^4.0.0",
+        "react": "^18.0",
+        "react-dom": "^18.0"
+    },
+    "peerDependencies": {
+        "@mui/material": "^5.1",
+        "immutable": "^4.0.0",
+        "react": "^17.0 || ^18.0",
+        "react-dom": "^17.0 || ^18.0"
+    },
+    "main": "index.js",
+    "module": "esm/index.js",
+    "scripts": {
+        "dtsgen": "tsc -d --emitDeclarationOnly --pretty && node ../../tools/merge-dirs build/dts/packages/react-use-snack/src build && rm -rf build/dts && rm -rf build/**/*.test.* build/**/*.mock.*"
+    },
+    "publishConfig": {
+        "access": "public"
+    }
+}
