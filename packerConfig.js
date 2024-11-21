@@ -1,8 +1,8 @@
 import path from 'path'
 import url from 'url'
 import {packer, webpack} from 'lerna-packer'
-import {babelTargetsLegacyCjsFirst} from 'lerna-packer/packer/babelEsModules.js'
-import {makeModulePackageJson, copyRootPackageJson, transformerForLegacyCjsFirst} from 'lerna-packer/packer/modulePackages.js'
+import {babelTargetsLegacyEsmFirst} from 'lerna-packer/packer/babelEsModules.js'
+import {makeModulePackageJson, copyRootPackageJson, transformerForLegacyEsmFirst} from 'lerna-packer/packer/modulePackages.js'
 import fs from 'fs'
 
 const __dirname = path.dirname(url.fileURLToPath(import.meta.url))
@@ -37,13 +37,13 @@ packer({
             name: 'react-use-snack',
             root: path.resolve(__dirname, 'packages', 'react-use-snack'),
             entry: path.resolve(__dirname, 'packages', 'react-use-snack/src/'),
-            babelTargets: babelTargetsLegacyCjsFirst,
+            babelTargets: babelTargetsLegacyEsmFirst,
         },
     },
 }, __dirname, {
     afterEsModules: (packages, pathBuild, isServing) => {
         return Promise.all([
-            makeModulePackageJson(transformerForLegacyCjsFirst)(
+            makeModulePackageJson(transformerForLegacyEsmFirst)(
                 Object.keys(packages).reduce(
                     (packagesFiltered, pack) =>
                         packages[pack].esmOnly ? packagesFiltered : {...packagesFiltered, [pack]: packages[pack]},

@@ -1,30 +1,31 @@
-import { List } from 'immutable'
-import React from 'react'
+import { useCallback, useContext } from 'react'
 import { SnackbarContext, SnackbarNotice, UseSnackbarActions } from 'react-use-snack/SnackProvider'
 
 const snackbarId = {current: 0}
 
-export function useSnack<N extends SnackbarNotice = SnackbarNotice>(): UseSnackbarActions<N> & { snackbars: List<SnackbarNotice> } {
-    const [snackbars, setSnackbar] = React.useContext(SnackbarContext)
+export function useSnack<TNotice extends SnackbarNotice = SnackbarNotice>(): UseSnackbarActions<TNotice> & { snackbars: TNotice[] } {
+    const [snackbars, setSnackbar] = useContext(SnackbarContext)
 
-    const rmNotice = React.useCallback((id) => {
+    const rmNotice = useCallback((id) => {
         setSnackbar(sb => {
             const i = sb.findIndex(s => s.id === id)
             if(i !== -1) {
-                sb = sb.splice(i, 1)
+                sb = [...sb]
+                sb.splice(i, 1)
             }
             return sb
         })
     }, [setSnackbar])
 
-    const addNotice = React.useCallback((notice: Omit<N, 'id'> & Partial<Pick<N, 'id'>>) => {
+    const addNotice: UseSnackbarActions<TNotice>['addNotice'] = useCallback((notice: Omit<TNotice, 'id'> & Partial<Pick<TNotice, 'id'>>) => {
         const id = typeof notice.id === 'undefined' ? snackbarId.current = snackbarId.current + 1 : notice.id
         setSnackbar(sb => {
+            sb = [...sb]
             const i = sb.findIndex(s => s.id === id)
             if(i !== -1) {
-                sb = sb.splice(i, 1)
+                sb.splice(i, 1)
             }
-            sb = sb.push({
+            sb.push({
                 id: id,
                 ...notice,
             })
@@ -36,6 +37,6 @@ export function useSnack<N extends SnackbarNotice = SnackbarNotice>(): UseSnackb
     return {
         addNotice: addNotice,
         rmNotice: rmNotice,
-        snackbars: snackbars,
+        snackbars: snackbars as TNotice[],
     }
 }

@@ -1,1 +1,1 @@
-export * from './SnackRenderer'
+export * from './SnackRenderer.js'
